@@ -14,3 +14,7 @@
 *::-webkit-scrollbar-thumb:hover {
   background-color: rgb(37 99 235);
 }
+.rooms-button:hover, .parking-button:hover {
+  scale: 0.99;
+  background-color: beige;
+}
