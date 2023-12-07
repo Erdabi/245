@@ -2,76 +2,68 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Homepage</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Homepage</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="flex flex-col min-h-screen">
-    <nav class="bg-gray-800 text-white p-4">
-        <div class="container mx-auto flex justify-between">
-            <div class="flex space-x-4">
-                <a href="#" class="hover:text-gray-300">Home</a>
-                <a href="roomreservation.html" class="hover:text-gray-300">Rooms</a>
-                <a href="#" class="hover:text-gray-300">Parking Spaces</a>
-            </div>
-            <div>
-                <a href="login.html" class="hover:text-gray-300">Logout</a>
-            </div>
-        </div>
-    </nav>
+  <nav class="bg-gray-800 text-white p-4">
+    <div class="container mx-auto flex justify-between">
+      <div class="flex space-x-4">
+        <a href="#" class="hover:text-gray-300">Home</a>
+        <a href="roomreservation.html" class="hover:text-gray-300">Raumvermietung</a>
+        <a href="parking.html" class="hover:text-gray-300">Parkplätze</a>
+      </div>
+      <div>
+        <a href="login.html" class="hover:text-gray-300">Logout</a>
+      </div>
+    </div>
+  </nav>
+  <div class="flex-grow container mx-auto p-4">
     <div class="flex-grow container mx-auto p-4">
-      <div class="flex-grow container mx-auto p-4">
-        <div class="text-center my-6">
-            <h1 class="text-3xl font-bold">Willkommen bei unserer Vermietung!</h1>
-            <p class="text-xl mt-2">Wir bieten die Möglichkeit, Büro-Räumlichkeiten und Parkplätze zu mieten.</p>
-        </div>
-    
-        <div class="grid md:grid-cols-2 gap-4">
-          <a  href="roomreservation.html">
-            <div class="rooms-button rounded overflow-hidden shadow-lg">
-                <img src="path_to_your_office_image.jpg" alt="Büro-Räumlichkeiten">
-                <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2">Büro-Räumlichkeiten</div>
-                    <p class="text-gray-700 text-base">
-                        Entdecken Sie unsere modernen und flexiblen Büroflächen, ideal für Ihr Geschäft.
-                    </p>
-                </div>
-            </div>
-          </a>
-          <a  href="zu_deiner_mom.html">
-            <div class="parking-button rounded overflow-hidden shadow-lg">
-                <img src="path_to_your_parking_image.jpg" alt="Parkplätze">
-                <div class="px-6 py-4">
-                    <div class="font-bold text-xl mb-2">Parkplätze</div>
-                    <p class="text-gray-700 text-base">
-                        Sichere und bequeme Parkmöglichkeiten in zentraler Lage.
-                    </p>
-                </div>
-            </div>
-          </a>
-        </div>
-    
-        <div class="my-6">
-            <h2 class="text-2xl font-bold text-center mb-4">Unser Standort</h2>
-            <iframe 
-                width="100%" 
-                height="400" 
-                frameborder="0" 
-                scrolling="no" 
-                marginheight="0" 
-                marginwidth="0"
-                src="https://maps.google.com/maps?q=Zieglerstrasse%2064/3000,%2014%20Bern&t=&z=13&ie=UTF8&iwloc=&output=embed">
-            </iframe>
-        </div>
-    </div>
-    </div>
+      <div class="text-center my-6">
+        <h1 class="text-3xl font-bold">Willkommen bei unserer Vermietung!</h1>
+        <p class="text-xl mt-2">Wir bieten die Möglichkeit, Büro-Räumlichkeiten und Parkplätze zu mieten.</p>
+      </div>
 
-    <footer class="bg-gray-700 text-white text-center p-4 mt-auto">
-        Modul 245 CsBe Bern AG
-    </footer>
+      <div class="grid md:grid-cols-2 gap-4">
+        <a href="roomreservation.html">
+          <div class="rooms-button rounded overflow-hidden shadow-lg">
+            <div class="px-6 py-4">
+              <div class="font-bold text-xl mb-2">Büro-Räumlichkeiten</div>
+              <p class="text-gray-700 text-base">
+                Entdecken Sie unsere modernen und flexiblen Büroflächen, ideal für Ihr Geschäft.
+              </p>
+            </div>
+          </div>
+        </a>
+        <a href="zu_deiner_mom.html">
+          <div class="parking-button rounded overflow-hidden shadow-lg">
+            <div class="px-6 py-4">
+              <div class="font-bold text-xl mb-2">Parkplätze</div>
+              <p class="text-gray-700 text-base">
+                Sichere und bequeme Parkmöglichkeiten in zentraler Lage.
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <div class="my-6">
+        <h2 class="text-2xl font-bold text-center mb-4">Unser Standort</h2>
+        <iframe width="100%" height="400" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+          src="https://maps.google.com/maps?q=Zieglerstrasse%2064/3000,%2014%20Bern&t=&z=13&ie=UTF8&iwloc=&output=embed">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-gray-700 text-white text-center p-4 mt-auto">
+    Modul 245 CsBe Bern AG
+  </footer>
 
 </body>
 

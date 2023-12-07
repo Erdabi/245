@@ -54,6 +54,7 @@ const initializeAPI = async (app) => {
     login
   );
   app.get("/api/feed", authMiddleware, getFeed);
+  /*
   app.post(
     "/api/feed",
     authMiddleware,
@@ -62,11 +63,14 @@ const initializeAPI = async (app) => {
     body("text").notEmpty().withMessage("text is required."),
     postTweet
   );
+  */
 };
 function containsInjection(str) {
   const htmlAndSqlPattern = /<[^>]*>|(\bSELECT|INSERT|UPDATE|DELETE|FROM|WHERE|DROP|ALTER|CREATE|TABLE|script)\b/i;
   return htmlAndSqlPattern.test(str);
 }
+
+/*
 const postTweet = async (req, res) => {
   const { username, timestamp, text } = req.body;
 
@@ -85,7 +89,6 @@ const postTweet = async (req, res) => {
   }
 };
 
-
 const getFeed = async (req, res) => {
     
   
@@ -100,7 +103,7 @@ const getFeed = async (req, res) => {
       res.status(500).json({ error: "Internal Server Error." });
     }
   }
-  
+  */
 
 const login = async (req, res) => {
   try {

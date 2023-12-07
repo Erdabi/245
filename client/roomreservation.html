@@ -1,107 +1,196 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservation Buero Raeumlichkeiten</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="flex flex-col min-h-screen">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="flex flex-col min-h-screen">
     <nav class="bg-gray-800 text-white p-4">
-        <div class="container mx-auto flex justify-between">
-            <div class="flex space-x-4">
-                <a href="index.html" class="hover:text-gray-300">Home</a>
-                <a href="roomreservation.html" class="hover:text-gray-300">Rooms</a>
-                <a href="#" class="hover:text-gray-300">Parking Spaces</a>
-            </div>
-            <div>
-                <a href="login.html" class="hover:text-gray-300">Logout</a>
-            </div>
+      <div class="container mx-auto flex justify-between">
+        <div class="flex space-x-4">
+          <a href="index.html" class="hover:text-gray-300">Home</a>
+          <a href="roomreservation.html" class="hover:text-gray-300"
+            >Raumvermietung</a
+          >
+          <a href="parking.html" class="hover:text-gray-300">Parkplätze</a>
         </div>
+        <div>
+          <a href="login.html" class="hover:text-gray-300">Logout</a>
+        </div>
+      </div>
     </nav>
-    
-    <div class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold mb-5">Reservation App</h1>
-        <form id="reservation-form">
-            <div class="mb-5">
-                <label for="check-in" class="block mb-1">Check-In</label>
-                <input type="date" id="check-in" name="check-in" class="w-full p-2 border border-gray-300 rounded">
-            </div>
-            <div class="mb-5">
-                <label for="check-out" class="block mb-1">Check-Out</label>
-                <input type="date" id="check-out" name="check-out" class="w-full p-2 border border-gray-300 rounded">
-            </div>
-            <div class="mb-5">
-                <label for="p-number" class="block mb-1">Zimmer Nummer</label>
-                <input type="text" id="p-number" name="p-number" class="w-full p-2 border border-gray-300 rounded">
-            </div>
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Reserve Now</button>
-        </form>
-    </div>
-    <div class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md">
-        <h1 class="text-3xl font-bold mb-5">Choose a Room</h1>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-            <div class="bg-white rounded-lg shadow-md p-5">
-                <img class="w-full h-48 object-cover mb-3" src="img/Blueemlisalp.jpg" alt="Room Blueemlisalp">
-                <h2 class="text-xl font-semibold mb-3">Blüemlisalp</h2>
-                <p class="text-gray-600">Description of Room 1</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-5">
-                <img class="w-full h-48 object-cover mb-3" src="img/Boston.jpeg" alt="Boston">
-                <h2 class="text-xl font-semibold mb-3">Boston</h2>
-                <p class="text-gray-600">Description of Room 2</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-5">
-                <img class="w-full h-48 object-cover mb-3" src="img/Cambridge.jpeg" alt="Cambridge">
-                <h2 class="text-xl font-semibold mb-3">Cambridge</h2>
-                <p class="text-gray-600">Description of Room 3</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-5">
-                <img class="w-full h-48 object-cover mb-3" src="img/EIger.jpeg" alt="Eiger">
-                <h2 class="text-xl font-semibold mb-3">Eiger</h2>
-                <p class="text-gray-600">Description of Room 3</p>
-            </div>
-            <div class="bg-white rounded-lg shadow-md p-5">
-                <img class="w-full h-48 object-cover mb-3" src="img/Cambridge.jpeg" alt="Cambridge">
-                <h2 class="text-xl font-semibold mb-3">Cambridge</h2>
-                <p class="text-gray-600">Description of Room 3</p>
-            </div>
+
+    <div
+      class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md"
+    >
+      <h1 class="text-3xl font-bold mb-5">Reservation App</h1>
+      <form id="reservation-form">
+        <div class="mb-5">
+          <label for="check-in" class="block mb-1">Check-In</label>
+          <input
+            type="date"
+            id="check-in"
+            name="check-in"
+            class="w-full p-2 border border-gray-300 rounded"
+          />
         </div>
+        <div class="mb-5">
+          <label for="check-out" class="block mb-1">Check-Out</label>
+          <input
+            type="date"
+            id="check-out"
+            name="check-out"
+            class="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div class="mb-5">
+          <label for="p-number">Wählen Sie einen Raum aus:</label>
+          <select
+            id="p-number"
+            name="p-number"
+            class="w-full p-2 border border-gray-300 rounded"
+          >
+            <option value="Raum waehlen">Raum wählen</option>
+            <option value="Bluemlisalp">Blüemlisalp</option>
+            <option value="Boston">Boston</option>
+            <option value="Cambridge">Cambridge</option>
+            <option value="Eiger">Eiger</option>
+            <option value="Harvard">Harvard</option>
+            <option value="Rubin">Rubin</option>
+            <option value="Smaragd">Smaragd</option>
+            <option value="Sorbonne">Sorbonne</option>
+          </select>
+        </div>
+        <div class="mb-5">
+          <label for="p-number">Wählen Sie einen Zeitraum aus:</label>
+          <select
+            id="p-number"
+            name="p-number"
+            class="w-full p-2 border border-gray-300 rounded"
+          >
+            <option value="Raum waehlen">Zeitraum wählen</option>
+            <option value="Vormittag">Vormittag</option>
+            <option value="Nachmittag">Nachmittag</option>
+            <option value="Ganz Taegig">Ganztägig</option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+        >
+          Reserve Now
+        </button>
+      </form>
     </div>
-    <script>
-        const reservationForm = document.getElementById('reservation-form');
-
-        reservationForm.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const checkIn = new Date(document.getElementById('check-in').value);
-            const checkOut = new Date(document.getElementById('check-out').value);
-            const roomNumber = document.getElementById('room-number').value;
-
-            if (checkIn > checkOut) {
-                alert('Check-In date must be earlier than Check-Out date.');
-                return;
-            }
-
-            const daysDifference = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-
-            if (daysDifference < 1) {
-                alert('Please stay at least one night.');
-                return;
-            }
-
-            // Fetch room availability data from the server
-            // Check if the selected room is available for the given dates
-
-            if (true) {
-                alert('Reservation successful.');
-            } else {
-                alert('The selected room is not available for the given dates. Please choose another room.');
-            }
-        });
-    </script>
+    <div
+      class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md"
+    >
+      <h1 class="text-3xl font-bold mb-5">Wählen sie ein Raum aus:</h1>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div class="card bg-white rounded-lg shadow-md p-5">
+          <img src="img/Blueemlisalp.jpg" alt="Room Blueemlisalp" class="w-full h-48 object-cover mb-3">
+          <div class="overlay">
+            Bauplan einsehen
+          </div>
+          <h2 class="text-xl font-semibold mb-3">Blüemlisalp</h2>
+          <ul class="text-gray-600">
+            <li>(Seminarraum)</li>
+            <li>max. 20 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/Boston.jpeg"
+            alt="Boston"
+          />
+          <h2 class="text-xl font-semibold mb-3">Boston</h2>
+          <ul class="text-gray-600">
+            <li>(Informatikraum)</li>
+            <li>max. 17 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/Cambridge.jpeg"
+            alt="Cambridge"
+          />
+          <h2 class="text-xl font-semibold mb-3">Cambridge</h2>
+          <ul class="text-gray-600">
+            <li>(Informatikraum)</li>
+            <li>max. 17 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/EIger.jpeg"
+            alt="Eiger"
+          />
+          <h2 class="text-xl font-semibold mb-3">Eiger</h2>
+          <ul class="text-gray-600">
+            <li>(Informatikraum)</li>
+            <li>max. 20 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/Harvard.jpeg"
+            alt="Harvard"
+          />
+          <h2 class="text-xl font-semibold mb-3">Harvard</h2>
+          <ul class="text-gray-600">
+            <li>(Informatikraum)</li>
+            <li>max. 23 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/Rubin.jpeg"
+            alt="Rubin"
+          />
+          <h2 class="text-xl font-semibold mb-3">Rubin</h2>
+          <ul class="text-gray-600">
+            <li>(Informatikraum)</li>
+            <li>max. 30 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/Smaragd.jpeg"
+            alt="Smaragd"
+          />
+          <h2 class="text-xl font-semibold mb-3">Smaragd</h2>
+          <ul class="text-gray-600">
+            <li>(Seminarraum)</li>
+            <li>max. 30 Plätze</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-5">
+          <img
+            class="w-full h-48 object-cover mb-3"
+            src="img/Sorbonne.jpeg"
+            alt="Sorbonne"
+          />
+          <h2 class="text-xl font-semibold mb-3">Sorbonne</h2>
+          <ul class="text-gray-600">
+            <li>(Informatikraum)</li>
+            <li>max. 15 Plätze</li>
+          </ul>
+        </div>
+      </div>
+    </div>
     <footer class="bg-gray-700 text-white text-center p-4 mt-auto">
-        Modul 245 CsBe Bern AG
+      Modul 245 CsBe Bern AG
     </footer>
-</body>
+  </body>
 </html>

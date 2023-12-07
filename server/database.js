@@ -22,6 +22,15 @@ const seedUsersTable = `INSERT INTO users (username, password) VALUES
 ('john', '123456'),
 ('jane', '123456');`
 
+const roomReservationsTableExists =
+  "SELECT name FROM sqlite_master WHERE type='table' AND name='roomreservations'";
+const createRoomReservationsTable = `CREATE TABLE roomreservations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  checkIn TEXT,
+  checkOut TEXT,
+  roomNumber TEXT
+)`;
+
 const initializeDatabase = async () => {
   const db = new sqlite3.Database("./minitwitter.db");
 
@@ -52,6 +61,16 @@ const initializeDatabase = async () => {
           db.run(seedUsersTable);
         });
       }
+      db.get(roomReservationsTableExists, [], async (err, row) => {
+        if (err) {
+          pino.error(err, "Error checking if reservations table exists");
+          return;
+        }
+        if (!row) {
+          pino.info("Creating reservations table");
+          await db.run(createRoomReservationsTable);
+        }
+      });
     });
   });
 
