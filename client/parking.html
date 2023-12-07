@@ -23,36 +23,21 @@
       </div>
     </nav>
 
-    <div
-      class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md"
-    >
-      <h1 class="text-3xl font-bold mb-5">Parkingreservation</h1>
-      <form id="reservation-form">
+    <div class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md">
+      <h1 class="text-3xl font-bold mb-5">Parkplatzreservierung</h1>
+      <form id="parking-reservation-form">
         <div class="mb-5">
-          <label for="check-in" class="block mb-1">Check-In</label>
-          <input
-            type="date"
-            id="check-in"
-            name="check-in"
-            class="w-full p-2 border border-gray-300 rounded"
-          />
+          <label for="parking-check-in" class="block mb-1">Check-In</label>
+          <input type="date" id="parking-check-in" name="parking-check-in" class="w-full p-2 border border-gray-300 rounded" />
         </div>
         <div class="mb-5">
-          <label for="check-out" class="block mb-1">Check-Out</label>
-          <input
-            type="date"
-            id="check-out"
-            name="check-out"
-            class="w-full p-2 border border-gray-300 rounded"
-          />
+          <label for="parking-check-out" class="block mb-1">Check-Out</label>
+          <input type="date" id="parking-check-out" name="parking-check-out" class="w-full p-2 border border-gray-300 rounded" />
         </div>
         <div class="mb-5">
-          <label for="p-number">Wählen Sie einen Raum aus:</label>
-          <select
-            id="p-number"
-            name="p-number"
-            class="w-full p-2 border border-gray-300 rounded"
-          > <option value="Parkplatz waehlen">Parkplatz wählen</option>
+          <label for="parking-number" class="block mb-1">Wählen Sie einen Parkplatz aus:</label>
+          <select id="parking-number" name="parking-number" class="w-full p-2 border border-gray-300 rounded">
+            <option value="">Parkplatz wählen</option>
             <option value="Parkplatz 1">Parkplatz 1</option>
             <option value="Parkplatz 2">Parkplatz 2</option>
             <option value="Parkplatz 3">Parkplatz 3</option>
@@ -61,6 +46,7 @@
             <option value="Parkplatz 6">Parkplatz 6</option>
             <option value="Parkplatz 7">Parkplatz 7</option>
             <option value="Parkplatz 8">Parkplatz 8</option>
+            
           </select>
         </div>
         <div class="mb-5">

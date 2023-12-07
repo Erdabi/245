@@ -4,6 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutButton = document.getElementById("logout");
 
   const token = localStorage.getItem("token");
+
+  function on() {
+    document.getElementById("overlay").style.display = "block";
+  }
+  
+  function off() {
+    document.getElementById("overlay").style.display = "none";
+  }
+
+
   if (!token) {
     window.location.href = "/login.html";
   }

@@ -1,26 +1,41 @@
-const reservationForm = document.getElementById('reservation-form');
+const parkingReservationForm = document.getElementById('parking-reservation-form');
 
-        reservationForm.addEventListener('submit', function(event) {
-            event.preventDefault();
+parkingReservationForm.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-            const checkIn = new Date(document.getElementById('check-in').value);
-            const checkOut = new Date(document.getElementById('check-out').value);
-            const roomNumber = document.getElementById('room-number').value;
+    const parkingNumber = document.getElementById('parking-number').value;
+    const parkingCheckIn = document.getElementById('parking-check-in').value;
+    const parkingCheckOut = document.getElementById('parking-check-out').value;
 
-            if (checkIn > checkOut) {
-                alert('Check-In date must be earlier than Check-Out date.');
-                return;
-            }
+    if (new Date(parkingCheckIn) > new Date(parkingCheckOut)) {
+        alert('Check-In date must be earlier than Check-Out date.');
+        return;
+    }
 
-            const daysDifference = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+    const parkingReservationData = {
+        parkingCheckIn,
+        parkingCheckOut,
+        parkingNumber
+    };
 
-
-            // Fetch room availability data from the server
-            // Check if the selected room is available for the given dates
-
-            if (true) {
-                alert('Reservation successful.');
-            } else {
-                alert('The selected room is not available for the given dates. Please choose another room.');
-            }
-        });
+    fetch('/api/parkingReservation', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            // Hier können weitere Header hinzugefügt werden, falls erforderlich
+        },
+        body: JSON.stringify(parkingReservationData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.status === 'success') {
+            alert('Parking reservation successful.');
+        } else {
+            alert('The selected parking space is not available for the given dates. Please choose another parking space.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while making the parking reservation.');
+    });
+});

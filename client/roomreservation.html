@@ -8,6 +8,7 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
+    <script src="scripts/index.js" defer></script>
   </head>
   <body class="flex flex-col min-h-screen">
     <nav class="bg-gray-800 text-white p-4">
@@ -24,7 +25,10 @@
         </div>
       </div>
     </nav>
-
+    <div id="overlay" onclick="off()">
+      <div id="text">Overlay Text</div>
+    </div>
+    <button onclick="on()">Turn on overlay effect</button>
     <div
       class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md"
     >
@@ -95,7 +99,7 @@
         <div class="card bg-white rounded-lg shadow-md p-5">
           <img src="img/Blueemlisalp.jpg" alt="Room Blueemlisalp" class="w-full h-48 object-cover mb-3">
           <div class="overlay">
-            Bauplan einsehen
+            Bauplan
           </div>
           <h2 class="text-xl font-semibold mb-3">Blüemlisalp</h2>
           <ul class="text-gray-600">
