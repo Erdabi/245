@@ -64,13 +64,42 @@ const initializeAPI = async (app) => {
     postTweet
   );
   */
+  app.post('/api/roomReservation', async (req, res) => {
+    const { checkIn, checkOut, roomNumber } = req.body;
+    if (!checkIn || !checkOut || !roomNumber) {
+      return res.status(400).json({ error: 'Invalid input data' });
+    }
+    const query = `INSERT INTO room_reservations (checkIn, checkOut, roomNumber) VALUES ('${checkIn}', '${checkOut}', '${roomNumber}')`;
+    try {
+      await insertDB(db, query);
+      res.json({ status: 'Room reservation successful' });
+    } catch (error) {
+      pino.error('Error making room reservation:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
+
+  app.post('/api/parkingReservation', async (req, res) => {
+    const { parkingCheckIn, parkingCheckOut, parkingNumber, parkingTime  } = req.body;
+    if (!parkingCheckIn || !parkingCheckOut || !parkingNumbe || !parkingTime) {
+      return res.status(400).json({ error: 'Invalid input data' });
+    }
+    const query = `INSERT INTO parking_reservations (checkIn, checkOut, parkingNumber, parkingTime) VALUES ('${parkingCheckIn}', '${parkingCheckOut}', '${parkingNumber}')`;
+    try {
+      await insertDB(db, query);
+      res.json({ status: 'Parking reservation successful' });
+    } catch (error) {
+      pino.error('Error making parking reservation:', error.message);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  });
 };
 function containsInjection(str) {
   const htmlAndSqlPattern = /<[^>]*>|(\bSELECT|INSERT|UPDATE|DELETE|FROM|WHERE|DROP|ALTER|CREATE|TABLE|script)\b/i;
   return htmlAndSqlPattern.test(str);
 }
 
-/*
+
 const postTweet = async (req, res) => {
   const { username, timestamp, text } = req.body;
 
@@ -103,7 +132,7 @@ const getFeed = async (req, res) => {
       res.status(500).json({ error: "Internal Server Error." });
     }
   }
-  */
+  
 
 const login = async (req, res) => {
   try {

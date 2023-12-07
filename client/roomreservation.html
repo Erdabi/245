@@ -8,9 +8,15 @@
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
       rel="stylesheet"
     />
-    <script src="scripts/index.js" defer></script>
+    <script src="scripts/roomreservationform.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body class="flex flex-col min-h-screen">
+    <div id="overlay" onclick="off()">
+      <div id="image-container">Drücken sie auf den Bildschirm um den Bauplan zu schliessen
+        
+      </div>
+    </div>
     <nav class="bg-gray-800 text-white p-4">
       <div class="container mx-auto flex justify-between">
         <div class="flex space-x-4">
@@ -25,10 +31,7 @@
         </div>
       </div>
     </nav>
-    <div id="overlay" onclick="off()">
-      <div id="text">Overlay Text</div>
-    </div>
-    <button onclick="on()">Turn on overlay effect</button>
+    
     <div
       class="container mx-auto my-10 px-5 py-10 bg-white rounded-lg shadow-md"
     >
@@ -103,6 +106,7 @@
           </div>
           <h2 class="text-xl font-semibold mb-3">Blüemlisalp</h2>
           <ul class="text-gray-600">
+            <li><button onclick="on('bumplisalp')">Bauplan anzeigen</button></li>
             <li>(Seminarraum)</li>
             <li>max. 20 Plätze</li>
           </ul>
@@ -114,7 +118,9 @@
             alt="Boston"
           />
           <h2 class="text-xl font-semibold mb-3">Boston</h2>
+          
           <ul class="text-gray-600">
+            <li><button onclick="on('Boston')">Bauplan anzeigen</button></li>
             <li>(Informatikraum)</li>
             <li>max. 17 Plätze</li>
           </ul>
@@ -127,6 +133,7 @@
           />
           <h2 class="text-xl font-semibold mb-3">Cambridge</h2>
           <ul class="text-gray-600">
+            <li><button onclick="on('Cambridge')">Bauplan anzeigen</button></li>
             <li>(Informatikraum)</li>
             <li>max. 17 Plätze</li>
           </ul>
@@ -139,6 +146,7 @@
           />
           <h2 class="text-xl font-semibold mb-3">Eiger</h2>
           <ul class="text-gray-600">
+            <li><button onclick="on('Eiger')">Bauplan anzeigen</button></li>
             <li>(Informatikraum)</li>
             <li>max. 20 Plätze</li>
           </ul>
@@ -150,7 +158,9 @@
             alt="Harvard"
           />
           <h2 class="text-xl font-semibold mb-3">Harvard</h2>
+         
           <ul class="text-gray-600">
+            <li><button onclick="on('Harvard')">Bauplan anzeigen</button></li>
             <li>(Informatikraum)</li>
             <li>max. 23 Plätze</li>
           </ul>
@@ -162,7 +172,9 @@
             alt="Rubin"
           />
           <h2 class="text-xl font-semibold mb-3">Rubin</h2>
+         
           <ul class="text-gray-600">
+            <li><button onclick="on('Rubin')">Bauplan anzeigen</button></li>
             <li>(Informatikraum)</li>
             <li>max. 30 Plätze</li>
           </ul>
@@ -174,7 +186,9 @@
             alt="Smaragd"
           />
           <h2 class="text-xl font-semibold mb-3">Smaragd</h2>
+          
           <ul class="text-gray-600">
+            <li><button onclick="on('Smaragd')">Bauplan anzeigen</button></li>
             <li>(Seminarraum)</li>
             <li>max. 30 Plätze</li>
           </ul>
@@ -186,7 +200,9 @@
             alt="Sorbonne"
           />
           <h2 class="text-xl font-semibold mb-3">Sorbonne</h2>
+         
           <ul class="text-gray-600">
+            <li><button onclick="on('Sorbonne')">Bauplan anzeigen</button></li>
             <li>(Informatikraum)</li>
             <li>max. 15 Plätze</li>
           </ul>

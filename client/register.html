@@ -7,16 +7,16 @@
     <title>Login</title>
     <link rel="stylesheet" href="/styles.css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="/scripts/login.js"></script>
+    <script src="/scripts/register.js"></script>
 
   </head>
   <body
-    class="flex flex-col w-screen h-screen gap-3 text-white bg-gray-800 items-center"
+    class="flex flex-col w-screen h-screen gap-3 text-white bg-gray-700 items-center"
   >
-  <nav class="bg-gray-800 text-white p-4">
+  <nav class="bg-gray-700 text-white p-4">
     <div class="container mx-auto flex justify-between">
       <div class="flex space-x-4">
-        <a href="login.html" class="hover:text-gray-300">Login</a>
+        <a href="login.html" class="px-4 py-2 bg-green-500 hover:bg-green-400 rounded">Login</a>
       </div>
     </div>
   </nav>
@@ -56,12 +56,17 @@
               class="w-full p-2 px-4 bg-slate-400 rounded grow placeholder-gray-200"
             />
             <input
-              id="number"
-              placeholder="Tel. Nummer"
-              type="number"
-              required
-              class="w-full p-2 px-4 bg-slate-400 rounded grow placeholder-gray-200"
+            id="number"
+            placeholder="123-456-78-90"
+            type="tel"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}"
+            oninput="formatPhoneNumber(this)"
+            title="Please enter a valid phone number in the format xxx-xxx-xx-xx"
+            required
+            class="w-full p-2 px-4 bg-slate-400 rounded grow placeholder-gray-200"
             />
+            
+                
             <input
               id="password"
               placeholder="Password"
@@ -85,3 +90,4 @@
   </footer>
   </body>
 </html>
+

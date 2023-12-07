@@ -6,6 +6,7 @@ parkingReservationForm.addEventListener('submit', function(event) {
     const parkingNumber = document.getElementById('parking-number').value;
     const parkingCheckIn = document.getElementById('parking-check-in').value;
     const parkingCheckOut = document.getElementById('parking-check-out').value;
+    const parkingTime = document.getElementById('parking-time').value;
 
     if (new Date(parkingCheckIn) > new Date(parkingCheckOut)) {
         alert('Check-In date must be earlier than Check-Out date.');
@@ -15,7 +16,8 @@ parkingReservationForm.addEventListener('submit', function(event) {
     const parkingReservationData = {
         parkingCheckIn,
         parkingCheckOut,
-        parkingNumber
+        parkingNumber,
+        parkingTime
     };
 
     fetch('/api/parkingReservation', {

@@ -5,14 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const token = localStorage.getItem("token");
 
-  function on() {
-    document.getElementById("overlay").style.display = "block";
-  }
-  
-  function off() {
-    document.getElementById("overlay").style.display = "none";
-  }
-
 
   if (!token) {
     window.location.href = "/login.html";
@@ -85,3 +77,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   getFeed();
 });
+

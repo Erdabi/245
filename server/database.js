@@ -31,6 +31,16 @@ const createRoomReservationsTable = `CREATE TABLE roomreservations (
   roomNumber TEXT
 )`;
 
+const parkingReservationsTableExists =
+  "SELECT name FROM sqlite_master WHERE type='table' AND name='parkingreservations'";
+const createParkingReservationsTable = `CREATE TABLE parkingreservations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  parkingCheckIn TEXT,
+  parkingCheckOut TEXT,
+  parkingNumber TEXT,
+  parkingTime TEXT
+)`;
+
 const initializeDatabase = async () => {
   const db = new sqlite3.Database("./minitwitter.db");
 
@@ -69,6 +79,16 @@ const initializeDatabase = async () => {
         if (!row) {
           pino.info("Creating reservations table");
           await db.run(createRoomReservationsTable);
+        }
+      });
+      db.get(parkingReservationsTableExists, [], async (err, row) => {
+        if (err) {
+          pino.error(err, "Error checking if parking reservations table exists");
+          return;
+        }
+        if (!row) {
+          pino.info("Creating parking reservations table");
+          await db.run(createParkingReservationsTable);
         }
       });
     });
