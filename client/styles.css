@@ -21,8 +21,8 @@
 #overlay {
   position: fixed;
   display: none;
-  width: 100vw; /* Änderung der Breite auf 100% der Viewport-Breite */
-  height: 100vh; /* Änderung der Höhe auf 100% der Viewport-Höhe */
+  width: 100vw; 
+  height: 100vh; 
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
@@ -31,7 +31,7 @@
 }
 
 #image-container {
-  position: fixed; /* Änderung der Position auf fixed */
+  position: fixed; 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -41,4 +41,8 @@
 }
 #image-container img {
   height: 100vh;
+}
+ul li button {
+  font-weight: bold;
+
 }

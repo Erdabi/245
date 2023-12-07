@@ -1,58 +1,54 @@
 const sqlite3 = require("sqlite3").verbose();
-const bcrypt = require("bcrypt");
 const pino = require("pino")();
 
-const tweetsTableExists =
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='tweets'";
-const createTweetsTable = `CREATE TABLE tweets (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT,
-  timestamp TEXT,
-  text TEXT
-)`;
 const usersTableExists =
   "SELECT name FROM sqlite_master WHERE type='table' AND name='users'";
 const createUsersTable = `CREATE TABLE users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT,
-  password TEXT
+  password TEXT,
+  city TEXT,
+  street TEXT,
+  email TEXT,
+  tel TEXT
 )`;
 const seedUsersTable = `INSERT INTO users (username, password) VALUES
 ('switzerchees', '123456'),
 ('john', '123456'),
 ('jane', '123456');`
 
-const roomReservationsTableExists =
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='roomreservations'";
-const createRoomReservationsTable = `CREATE TABLE roomreservations (
+const bookingTableExists =
+  "SELECT name FROM sqlite_master WHERE type='table' AND name='booking'";
+const createBookingTable = `CREATE TABLE booking (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  userId TEXT,
+  articleId TEXT,
+  price FLOAT,
   checkIn TEXT,
-  checkOut TEXT,
-  roomNumber TEXT
+  checkOut TEXT
 )`;
 
-const parkingReservationsTableExists =
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='parkingreservations'";
-const createParkingReservationsTable = `CREATE TABLE parkingreservations (
+const articleTableExists =
+  "SELECT name FROM sqlite_master WHERE type='table' AND name='articles'";
+const createArticleTable = `CREATE TABLE articles (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  parkingCheckIn TEXT,
-  parkingCheckOut TEXT,
-  parkingNumber TEXT,
-  parkingTime TEXT
+  name TEXT,
+  articleId TEXT,
+  priceForDay FLOAT
 )`;
 
 const initializeDatabase = async () => {
   const db = new sqlite3.Database("./minitwitter.db");
 
   db.serialize(() => {
-    db.get(tweetsTableExists, [], async (err, row) => {
+    db.get(bookingTableExists, [], async (err, row) => {
       if (err) {
-        pino.error(err, "Error checking if tweets table exists");
+        pino.error(err, "Error checking if booking table exists");
         return;
       }
       if (!row) {
-        pino.info("Creating tweets table");
-        await db.run(createTweetsTable);
+        pino.info("Creating booking table");
+        await db.run(createBookingTable);
       }
     });
     db.get(usersTableExists, [], async (err, row) => {
@@ -71,24 +67,14 @@ const initializeDatabase = async () => {
           db.run(seedUsersTable);
         });
       }
-      db.get(roomReservationsTableExists, [], async (err, row) => {
+      db.get(articleTableExists, [], async (err, row) => {
         if (err) {
           pino.error(err, "Error checking if reservations table exists");
           return;
         }
         if (!row) {
           pino.info("Creating reservations table");
-          await db.run(createRoomReservationsTable);
-        }
-      });
-      db.get(parkingReservationsTableExists, [], async (err, row) => {
-        if (err) {
-          pino.error(err, "Error checking if parking reservations table exists");
-          return;
-        }
-        if (!row) {
-          pino.info("Creating parking reservations table");
-          await db.run(createParkingReservationsTable);
+          await db.run(createArticleTable);
         }
       });
     });
@@ -97,14 +83,14 @@ const initializeDatabase = async () => {
   return db;
 };
 
-const insertDB = (db, query) => {
+const insertDB = (db, query, values) => {
   return new Promise((resolve, reject) => {
-    db.run(query, [], (err, rows) => {
+    db.run(query, values, function (err) {
       if (err) {
         pino.error(err, "Error inserting into the database");
         return reject(err);
       }
-      resolve(rows);
+      resolve(this.lastID);
     });
   });
 };

@@ -2,15 +2,10 @@ const { initializeDatabase, queryDB, insertDB } = require("./database");
 const { body } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const pino = require("pino")();
-const AesEncryption = require("aes-encryption");
 
 let db;
 const jwtSecret = "supersecret";
-const aes = new AesEncryption();
-aes.setSecretKey(
-  process.env.SECRET ||
-    "11122233344455566677788822244455555555555555555231231321313aaaff"
-);
+
 
 const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -107,7 +102,6 @@ const postTweet = async (req, res) => {
     res.json({ status: "ok" });
   } else {
     try {
-      const encryptedText = aes.encrypt(text);
       const query = `INSERT INTO tweets (username, timestamp, text) VALUES ('${username}', '${timestamp}', '${encryptedText}')`;
       await queryDB(db, query);
       res.json({ status: "ok" });
