@@ -1,11 +1,12 @@
 const { initializeDatabase, queryDB, insertDB } = require("./database");
-const { body } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const pino = require("pino")();
+const nodemailer = require('nodemailer');
+const { executeSQL } = require("./database");
 
 let db;
 const jwtSecret = "supersecret";
-
 
 const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -31,101 +32,105 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-const initializeAPI = async (app) => {
-  db = await initializeDatabase();
-  app.get("/api/feed", getFeed);
-  app.post("/api/feed", postTweet);
-  app.post(
-    "/api/login",
-    body("username")
-      .notEmpty()
-      .withMessage("Username is required.")
-      .isEmail()
-      .withMessage("Invalid email format."),
-    body("password")
-      .isLength({ min: 6, max: 64 })
-      .withMessage("Password must be between 6 to 64 characters.")
-      .escape(),
-    login
-  );
-  app.get("/api/feed", authMiddleware, getFeed);
-  /*
-  app.post(
-    "/api/feed",
-    authMiddleware,
-    body("username").notEmpty().withMessage("username is required."),
-    body("timestamp").notEmpty().withMessage("timestamp is required."),
-    body("text").notEmpty().withMessage("text is required."),
-    postTweet
-  );
-  */
-  app.post('/api/roomReservation', async (req, res) => {
-    const { checkIn, checkOut, roomNumber } = req.body;
-    if (!checkIn || !checkOut || !roomNumber) {
-      return res.status(400).json({ error: 'Invalid input data' });
-    }
-    const query = `INSERT INTO room_reservations (checkIn, checkOut, roomNumber) VALUES ('${checkIn}', '${checkOut}', '${roomNumber}')`;
-    try {
-      await insertDB(db, query);
-      res.json({ status: 'Room reservation successful' });
-    } catch (error) {
-      pino.error('Error making room reservation:', error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
 
-  app.post('/api/parkingReservation', async (req, res) => {
-    const { parkingCheckIn, parkingCheckOut, parkingNumber, parkingTime  } = req.body;
-    if (!parkingCheckIn || !parkingCheckOut || !parkingNumbe || !parkingTime) {
-      return res.status(400).json({ error: 'Invalid input data' });
-    }
-    const query = `INSERT INTO parking_reservations (checkIn, checkOut, parkingNumber, parkingTime) VALUES ('${parkingCheckIn}', '${parkingCheckOut}', '${parkingNumber}')`;
-    try {
-      await insertDB(db, query);
-      res.json({ status: 'Parking reservation successful' });
-    } catch (error) {
-      pino.error('Error making parking reservation:', error.message);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
-};
 function containsInjection(str) {
   const htmlAndSqlPattern = /<[^>]*>|(\bSELECT|INSERT|UPDATE|DELETE|FROM|WHERE|DROP|ALTER|CREATE|TABLE|script)\b/i;
   return htmlAndSqlPattern.test(str);
 }
 
 
-const postTweet = async (req, res) => {
-  const { username, timestamp, text } = req.body;
 
-  if (containsInjection(text) === true) {
-    res.json({ status: "ok" });
-  } else {
-    try {
-      const query = `INSERT INTO tweets (username, timestamp, text) VALUES ('${username}', '${timestamp}', '${encryptedText}')`;
-      await queryDB(db, query);
-      res.json({ status: "ok" });
-    } catch (error) {
-      pino.error("Error posting tweet:", error.message);
-      res.status(500).json({ error: "Internal Server Error." });
-    }
+
+async function sendEmail(to, subject, text) {
+  const transporter = nodemailer.createTransport({
+      service: 'gmail', 
+      auth: {
+          user: 'csbestudentexample@gmail.com', 
+          pass: 'HAejaler1245' 
+      }
+  });
+
+  const mailOptions = {
+      from: 'csbestudentexample@gmail.com',
+      to: to,
+      subject: subject,
+      text: text
+  };
+
+  try {
+      await transporter.sendMail(mailOptions);
+      pino.info('Email sent successfully');
+  } catch (error) {
+      pino.error('Error sending email:', error.message);
   }
+}
+
+const initializeAPI = (app) => {
+  app.post("/api/users", postRegisterUsers);
+  app.post("/api/booking", postRoomReservationData);
+  app.post("/api/booking", postParkingReservationData);
 };
 
-const getFeed = async (req, res) => {
-    
-  
-    const query = "SELECT * FROM tweets ORDER BY id DESC;";
-  
-    try {
-      const tweets = await queryDB(db, query);
-      
-      res.json(tweets);
-    } catch (error) {
-      pino.error("Error fetching feed:", error.message);
-      res.status(500).json({ error: "Internal Server Error." });
-    }
-  }
+const postRegisterUsers = async (req, res) => {
+  const { username, city, street, eMail, phoneNumber, password } = req.body;
+  const sqlUsername = username;
+  const sqlCity = city;
+  const sqlStreet = street;
+  const sqlEMail = eMail;
+  const sqlPhoneNumber = phoneNumber;
+  const sqlPassword = password;
+
+  // Hier deine SQL-Abfrage mit den angepassten Daten
+  const sqlQuery = `INSERT INTO users (username, city, street, email, tel, password) VALUES ('${sqlUsername}', '${sqlCity}', '${sqlStreet}', '${sqlEMail}', '${sqlPhoneNumber}', '${sqlPassword}')`;
+
+  // Verwenden Sie executeSQL statt connection.query
+  console.log(sqlQuery);
+  await executeSQL(sqlQuery);
+};
+
+ 
+ 
+const postRoomReservationData = async (req, res) => {
+  const { checkIn, checkOut, roomName, bookingTime } = req.body;
+  const sqlCheckIn = checkIn;
+  const sqlCheckOut = checkOut;
+  const sqlRoomName = roomName;
+  const sqlBookingTime = bookingTime;
+
+
+  // Hier deine SQL-Abfrage mit den angepassten Daten
+  const sqlQuery = `INSERT INTO booking (check_in, check_out, articleName, bookingtime) VALUES ('${sqlCheckIn}', '${sqlCheckOut}', '${sqlRoomName}', '${sqlBookingTime}')`;
+
+  // Verwenden Sie executeSQL statt connection.query
+  console.log(sqlQuery);
+  await executeSQL(sqlQuery);
+};
+
+const postParkingReservationData = async (req, res) => {
+  const { parkingCheckIn, parkingCheckOut, parkingNumber, parkingTime } = req.body;
+  const sqlParkingCheckIn = parkingCheckIn;
+  const sqlParkingCheckOut = parkingCheckOut;
+  const sqlParkingName = parkingName;
+  const sqlParkingTime = parkingTime;
+
+  // Hier deine SQL-Abfrage mit den angepassten Daten
+  const sqlQuery = `INSERT INTO booking (check_in, check_out, articleName, bookingTime) VALUES ('${sqlParkingCheckIn}', '${sqlParkingCheckOut}', '${sqlParkingNumber}', '${sqlParkingTime}')`;
+
+  // Verwenden Sie executeSQL statt connection.query
+  console.log(sqlQuery);
+  await executeSQL(sqlQuery);
+};
+
+
+ 
+ 
+const getReservations = async (req, res) => {
+  const getBookings = await executeSQL('SELECT * FROM booking');
+  const result = getBookings;
+ 
+  res.json(result);
+ 
+}
   
 
 const login = async (req, res) => {
@@ -154,4 +159,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { initializeAPI };
+module.exports = { initializeAPI, getReservations };

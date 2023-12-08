@@ -1,110 +1,79 @@
-const sqlite3 = require("sqlite3").verbose();
-const pino = require("pino")();
+let pool = null;
+ 
+const initializeMariaDB = () => {
 
-const usersTableExists =
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='users'";
-const createUsersTable = `CREATE TABLE users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT,
-  password TEXT,
-  city TEXT,
-  street TEXT,
-  email TEXT,
-  tel TEXT
-)`;
-const seedUsersTable = `INSERT INTO users (username, password) VALUES
-('switzerchees', '123456'),
-('john', '123456'),
-('jane', '123456');`
+  const mariadb = require("mariadb");
 
-const bookingTableExists =
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='booking'";
-const createBookingTable = `CREATE TABLE booking (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  userId TEXT,
-  articleId TEXT,
-  price FLOAT,
-  checkIn TEXT,
-  checkOut TEXT
-)`;
+  pool = mariadb.createPool({
 
-const articleTableExists =
-  "SELECT name FROM sqlite_master WHERE type='table' AND name='articles'";
-const createArticleTable = `CREATE TABLE articles (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT,
-  articleId TEXT,
-  priceForDay FLOAT
-)`;
+    database: process.env.DB_NAME || "mydb",
 
-const initializeDatabase = async () => {
-  const db = new sqlite3.Database("./minitwitter.db");
+    host: process.env.DB_HOST || "localhost",
 
-  db.serialize(() => {
-    db.get(bookingTableExists, [], async (err, row) => {
-      if (err) {
-        pino.error(err, "Error checking if booking table exists");
-        return;
-      }
-      if (!row) {
-        pino.info("Creating booking table");
-        await db.run(createBookingTable);
-      }
-    });
-    db.get(usersTableExists, [], async (err, row) => {
-      if (err) {
-        pino.error(err, "Error checking if users table exists");
-        return;
-      }
-      if (!row) {
-        pino.info("Creating users table");
-        db.run(createUsersTable, [], async (err) => {
-          if (err) {
-            pino.error(err, "Error creating users table");
-            return;
-          }
-          pino.info("Seeding users table");
-          db.run(seedUsersTable);
-        });
-      }
-      db.get(articleTableExists, [], async (err, row) => {
-        if (err) {
-          pino.error(err, "Error checking if reservations table exists");
-          return;
-        }
-        if (!row) {
-          pino.info("Creating reservations table");
-          await db.run(createArticleTable);
-        }
-      });
-    });
+    user: process.env.DB_USER || "user",
+
+    password: process.env.DB_PASSWORD || "123456",
+
+    connectionLimit: 5,
+
   });
 
-  return db;
 };
+ 
+ 
+const executeSQL = async (query) => {
 
-const insertDB = (db, query, values) => {
-  return new Promise((resolve, reject) => {
-    db.run(query, values, function (err) {
-      if (err) {
-        pino.error(err, "Error inserting into the database");
-        return reject(err);
-      }
-      resolve(this.lastID);
-    });
-  });
+  let conn;
+
+  try {
+
+    conn = await pool.getConnection();
+
+    const res = await conn.query(query);
+
+    return res;
+
+  } catch (err) {
+
+    console.log(err);
+
+  } finally {
+
+    if (conn) conn.release();
+
+  }
+
 };
+ 
+const initializeDBSchema = async () => {
 
-const queryDB = (db, query) => {
-  return new Promise((resolve, reject) => {
-    db.all(query, [], (err, rows) => {
-      if (err) {
-        pino.error(err, "Error querying the database");
-        return reject(err);
-      }
-      resolve(rows);
-    });
-  });
+  const usersTableQuery = ``;
+
+  await executeSQL(usersTableQuery);
+
+  const bookingTableQuery = `
+
+  CREATE TABLE IF NOT EXISTS booking (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    checkIn DATE,
+    checkOut DATE,
+    articleName VARCHAR(255),
+    bookingTime VARCHAR(255)
+  )`;
+
+  await executeSQL(bookingTableQuery);
+
+  const articleTableQuery = `
+  
+    CREATE TABLE IF NOT EXISTS articles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    articleId VARCHAR(255),
+    priceForDay FLOAT
+  )`;
+
+  await executeSQL(articleTableQuery);
+
 };
-
-module.exports = { initializeDatabase, queryDB, insertDB };
+ 
+module.exports = { executeSQL, initializeMariaDB, initializeDBSchema };

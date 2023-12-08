@@ -3,41 +3,29 @@ const roomReservationForm = document.getElementById('room-reservation-form');
 roomReservationForm.addEventListener('submit', function(event) {
     event.preventDefault();
 
-    const checkIn = document.getElementById('check-in').value;
-    const checkOut = document.getElementById('check-out').value;
-    const roomNumber = document.getElementById('room-number').value;
+    alert("Die Reservierung war erfolgreich!")
 
-    if (new Date(checkIn) > new Date(checkOut)) {
-        alert('Check-In date must be earlier than Check-Out date.');
-        return;
-    }
-
-    const roomReservationData = {
-        checkIn,
-        checkOut,
-        roomNumber
+    const postRoomReservationData = async () => {
+        const checkIn = document.getElementById('check-in').value;
+        const checkOut = document.getElementById('check-out').value;
+        const roomName = document.getElementById('room-name').value;
+        const bookingTime = document.getElementById('booking-time').value;
+    
+        const roomReservationData = {
+            checkIn: checkIn,
+            checkOut: checkOut,
+            roomName: roomName,
+            bookingTime: bookingTime
+        };
+    
+        await fetch("/api/roomReservation", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(roomReservationData),
+        });
     };
-
-    fetch('/api/roomReservation', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-            // Hier können weitere Header hinzugefügt werden, falls erforderlich
-        },
-        body: JSON.stringify(roomReservationData)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if(data.status === 'success') {
-            alert('Room reservation successful.');
-        } else {
-            alert('The selected room is not available for the given dates. Please choose another room.');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while making the room reservation.');
-    });
 });
 
 function on(img) {
@@ -74,5 +62,7 @@ function on(img) {
 function off() {
     document.getElementById("overlay").style.display = "none";
   }
+
+  
 
   
