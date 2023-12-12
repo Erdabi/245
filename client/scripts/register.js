@@ -9,34 +9,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultText = document.getElementById("resultText");
 
   registerButton.addEventListener("click", async () => {
-    const postRegisterData = async () => {
-      const username = document.getElementById('username').value;
-      const city = document.getElementById('city').value;
-      const street = document.getElementById('street').value;
-      const eMail = document.getElementById('eMail').value;
-      const phoneNumber = document.getElementById('number').value;
-      const password = document.getElementById('password').value;
-  
-      const registerData = {
-          username: username,
-          city: city,
-          street: street,
-          eMail: eMail,
-          phoneNumber: phoneNumber,
-          password: password
-      };
-  
-      await fetch("/api/register", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify(registerData),
-      });
-  };
+
+    postRegisterData();
+    alert("Die Registrierung war erfolgreich");
   console.log("Granat");
   });
 });
+const postRegisterData = async () => {
+  const username = document.getElementById('username').value;
+  const city = document.getElementById('city').value;
+  const street = document.getElementById('street').value;
+  const eMail = document.getElementById('eMail').value;
+  const phoneNumber = document.getElementById('number').value;
+  const password = document.getElementById('password').value;
+
+  const registerData = {
+      username: username,
+      city: city,
+      street: street,
+      eMail: eMail,
+      phoneNumber: phoneNumber,
+      password: password
+  };
+
+  await fetch("/api/users", {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registerData),
+  });
+};
 
 function formatPhoneNumber(input) {
     // Remove non-numeric characters

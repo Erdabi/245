@@ -1,32 +1,35 @@
-const roomReservationForm = document.getElementById('room-reservation-form');
+const roomReservationForm = document.getElementById('reservation-form');
 
 roomReservationForm.addEventListener('submit', function(event) {
     event.preventDefault();
-
+    postRoomReservationData();
     alert("Die Reservierung war erfolgreich!")
-
-    const postRoomReservationData = async () => {
-        const checkIn = document.getElementById('check-in').value;
-        const checkOut = document.getElementById('check-out').value;
-        const roomName = document.getElementById('room-name').value;
-        const bookingTime = document.getElementById('booking-time').value;
-    
-        const roomReservationData = {
-            checkIn: checkIn,
-            checkOut: checkOut,
-            roomName: roomName,
-            bookingTime: bookingTime
-        };
-    
-        await fetch("/api/roomReservation", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(roomReservationData),
-        });
-    };
 });
+const postRoomReservationData = async () => {
+    const checkIn = document.getElementById('check-in').value;
+    const checkOut = document.getElementById('check-out').value;
+    const roomName = document.getElementById('room-name').value;
+    const bookingTimeFrom = document.getElementById('booking-time-from').value;
+    const bookingTimeTo = document.getElementById('booking-time-to').value;
+    const bookingTime = bookingTimeFrom + "-" + bookingTimeTo
+
+    console.log(bookingTime)
+
+    const roomReservationData = {
+        checkIn: checkIn,
+        checkOut: checkOut,
+        roomName: roomName,
+        bookingTime: bookingTime
+    };
+
+    await fetch("/api/booking", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(roomReservationData),
+    });
+};
 
 function on(img) {
     let imageContainer = document.getElementById("image-container");

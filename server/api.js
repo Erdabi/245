@@ -7,6 +7,7 @@ const nodemailer = require('nodemailer');
 
 let db;
 const jwtSecret = "supersecret";
+
 initializeMariaDB();
 const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
@@ -65,10 +66,26 @@ async function sendEmail(to, subject, text) {
   }
 }
 
-const initializeAPI = (app) => {
+const initializeAPI = async (app) => {
+  // app.post("/api/login", login);
   app.post("/api/users", postRegisterUsers);
   app.post("/api/booking", postRoomReservationData);
   app.post("/api/booking", postParkingReservationData);
+  
+  db = await initializeDatabase();
+  app.post(
+    "/api/login",
+    body("username")
+      .notEmpty()
+      .withMessage("Username is required.")
+      .isEmail()
+      .withMessage("Invalid email format."),
+    body("password")
+      .isLength({ min: 6, max: 64 })
+      .withMessage("Password must be between 6 to 64 characters.")
+      .escape(),
+    login
+  );
 };
 
 const postRegisterUsers = async (req, res) => {
@@ -81,7 +98,7 @@ const postRegisterUsers = async (req, res) => {
   const sqlPassword = password;
 
   // Hier deine SQL-Abfrage mit den angepassten Daten
-  const sqlQuery = `INSERT INTO users (username, city, street, email, tel, password) VALUES ('${sqlUsername}', '${sqlCity}', '${sqlStreet}', '${sqlEMail}', '${sqlPhoneNumber}', '${sqlPassword}')`;
+  const sqlQuery = `INSERT INTO users (username, city, street, email, phone, password) VALUES ('${sqlUsername}', '${sqlCity}', '${sqlStreet}', '${sqlEMail}', '${sqlPhoneNumber}', '${sqlPassword}')`;
 
   // Verwenden Sie executeSQL statt connection.query
   console.log(sqlQuery);
@@ -99,7 +116,7 @@ const postRoomReservationData = async (req, res) => {
 
 
   // Hier deine SQL-Abfrage mit den angepassten Daten
-  const sqlQuery = `INSERT INTO booking (check_in, check_out, articleName, bookingtime) VALUES ('${sqlCheckIn}', '${sqlCheckOut}', '${sqlRoomName}', '${sqlBookingTime}')`;
+  const sqlQuery = `INSERT INTO booking (check_in, check_out, article_name, booking_time) VALUES ('${sqlCheckIn}', '${sqlCheckOut}', '${sqlRoomName}', '${sqlBookingTime}')`;
 
   // Verwenden Sie executeSQL statt connection.query
   console.log(sqlQuery);
@@ -108,13 +125,13 @@ const postRoomReservationData = async (req, res) => {
 
 const postParkingReservationData = async (req, res) => {
   const { parkingCheckIn, parkingCheckOut, parkingNumber, parkingTime } = req.body;
+  const articleName = parkingNumber;
   const sqlParkingCheckIn = parkingCheckIn;
   const sqlParkingCheckOut = parkingCheckOut;
-  const sqlParkingName = parkingName;
   const sqlParkingTime = parkingTime;
 
   // Hier deine SQL-Abfrage mit den angepassten Daten
-  const sqlQuery = `INSERT INTO booking (check_in, check_out, articleName, bookingTime) VALUES ('${sqlParkingCheckIn}', '${sqlParkingCheckOut}', '${sqlParkingNumber}', '${sqlParkingTime}')`;
+  const sqlQuery = `INSERT INTO booking (check_in, check_out, article_name, booking_time) VALUES ('${sqlParkingCheckIn}', '${sqlParkingCheckOut}', '${articleName}', '${sqlParkingTime}')`;
 
   // Verwenden Sie executeSQL statt connection.query
   console.log(sqlQuery);

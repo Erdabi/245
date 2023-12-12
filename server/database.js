@@ -39,7 +39,7 @@ const initializeDBSchema = async () => {
       email VARCHAR(255) NOT NULL UNIQUE,
       username VARCHAR(255) NOT NULL,
       street VARCHAR(255) NOT NULL,
-      city int NOT NULL,
+      city VARCHAR(255) NOT NULL,
       phone VARCHAR(255) NOT NULL,
       password VARCHAR(255) NOT NULL,
       PRIMARY KEY (id)

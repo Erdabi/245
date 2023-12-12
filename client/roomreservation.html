@@ -75,16 +75,11 @@
         </div>
         <div class="mb-5">
           <label for="p-number">Wählen Sie einen Zeitraum aus:</label>
-          <select
-            id="booking-time"
-            name="booking-time"
-            class="w-full p-2 border border-gray-300 rounded"
-          >
-            <option value="Raum waehlen">Zeitraum wählen</option>
-            <option value="Vormittag">Vormittag</option>
-            <option value="Nachmittag">Nachmittag</option>
-            <option value="Ganz Taegig">Ganztägig</option>
-          </select>
+          <br>
+          <label for="booking-time-from"><span>Von: </span></label>
+          <input type="time" id="booking-time-from" name="booking-time" class="w-1/3 p-2 border border-gray-300 rounded">
+          <label for="booking-time-from"><span>Bis: </span></label>
+          <input type="time" id="booking-time-to" name="booking-time" class="w-1/3 p-2 border border-gray-300 rounded">
         </div>
         <button
           type="submit"
