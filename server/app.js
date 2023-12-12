@@ -1,38 +1,87 @@
 const express = require("express");
 const http = require("http");
-const pino = require("pino")();
+const livereload = require("livereload");
+const connectLiveReload = require("connect-livereload");
 const { initializeAPI } = require("./api");
-const { rateLimit } = require("express-rate-limit");
+const {
+  initializeMariaDB,
+  initializeDBSchema,
+  executeSQL,
+} = require("./database");
 
 // Create the express server
 const app = express();
-app.disable("x-powered-by");
-app.use(express.json());
-
 const server = http.createServer(app);
 
-// Deliver static files from the client folder like css, js, images
+app.use(express.json());
+
+
+// create a livereload server
+const env = process.env.NODE_ENV || "development";
+if (env !== "production") {
+  const liveReloadServer = livereload.createServer();
+  liveReloadServer.server.once("connection", () => {
+    setTimeout(() => {
+      liveReloadServer.refresh("/");
+    }, 100);
+  });
+  // use livereload middleware
+  app.use(connectLiveReload());
+}
+
+// deliver static files from the client folder like css, js, images
 app.use(express.static("client"));
 
-// Route for the homepage
+// route for the homepage
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/client/index.html");
+  res.sendFile(__dirname + "/client/scripts/index.html");
+});
+// route for the rooms page
+app.get("/rooms", (req, res) => {
+  res.sendFile(__dirname + "/client/scripts/rooms/roomsDetail/roomsDetail.html");
+});
+// route for the reservation page from rooms
+app.get("/rooms/reservation", (req, res) => {
+  res.sendFile(__dirname + "/client/scripts/rooms/roomsReservirung/reservierung.html");
+});
+// route for the login page
+app.get("/login", (req, res) => {
+  res.sendFile(__dirname + "/client//scripts/login/loginseite.html");
+});
+// route for the parking page
+app.get("/parking", (req, res) => {
+  res.sendFile(__dirname + "/client/scripts/parkplätze/parkplatzDetail/parkplatzDetail.html");
+});
+// route for the reservation page from parking
+app.get("/parking/reservation", (req, res) => {
+  res.sendFile(__dirname + "/client/scripts/parkplätze/parkplatzReservirung/parkplatz.html");
 });
 
-const limiter = rateLimit({
-  windowMs: 60 * 1000, // 1 Minute
-  limit: 50, // Limit each IP to 50 requests per windowMs
-  standardHeaders: "draft-7",
-  legacyHeaders: false,
-});
-// Apply the rate limiting middleware to all requests
-app.use(limiter);
 
-// Initialize the REST API
-initializeAPI(app); 
+// Initialize the REST api
+initializeAPI(app);
 
-// Start the web server
-const serverPort = process.env.PORT || 3001;
-server.listen(serverPort, () => {
-  pino.info(`Express Server started on port ${serverPort}`);
-});
+// Allowing top-level await
+(async function () {
+  // Initialize the database
+  initializeMariaDB();
+  await initializeDBSchema();
+  const testDatabaseConnection = async () => {
+    try {
+      console.log("Testing database connection...");
+      const result = await executeSQL("SELECT * FROM booking;");
+      console.log("Database connection test successful. Result:", result);
+    } catch (error) {
+      console.error("Error testing database connection:", error);
+    }
+  };
+  // TODO: REMOVE!!!! test the database connection
+  await testDatabaseConnection();
+  //start the web server
+  const serverPort = process.env.PORT || 3000;
+  server.listen(serverPort, () => {
+    console.log(
+      `Express Server started on port ${serverPort} as '${env}' Environment`
+    );
+  });
+})();

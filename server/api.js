@@ -1,13 +1,13 @@
-const { initializeDatabase, queryDB, insertDB } = require("./database");
+const { initializeMariaDB, executeSQL } = require("./database");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 const pino = require("pino")();
 const nodemailer = require('nodemailer');
-const { executeSQL } = require("./database");
+
 
 let db;
 const jwtSecret = "supersecret";
-
+initializeMariaDB();
 const authMiddleware = (req, res, next) => {
   const authorization = req.headers.authorization;
   if (!authorization) {
