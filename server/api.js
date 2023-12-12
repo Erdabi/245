@@ -1,6 +1,7 @@
-const { initializeMariaDB, executeSQL } = require("./database");
+const { initializeMariaDB, executeSQL, queryDB } = require("./database");
 const { body, validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const window = require("window");
 const pino = require("pino")();
 const nodemailer = require('nodemailer');
 
@@ -67,12 +68,6 @@ async function sendEmail(to, subject, text) {
 }
 
 const initializeAPI = async (app) => {
-  // app.post("/api/login", login);
-  app.post("/api/users", postRegisterUsers);
-  app.post("/api/booking", postRoomReservationData);
-  app.post("/api/booking", postParkingReservationData);
-  
-  db = await initializeDatabase();
   app.post(
     "/api/login",
     body("username")
@@ -86,6 +81,11 @@ const initializeAPI = async (app) => {
       .escape(),
     login
   );
+  app.post("/api/users", postRegisterUsers);
+  app.post("/api/booking", postRoomReservationData);
+  app.post("/api/booking", postParkingReservationData);
+  
+  
 };
 
 const postRegisterUsers = async (req, res) => {
@@ -144,36 +144,21 @@ const postParkingReservationData = async (req, res) => {
 const getReservations = async (req, res) => {
   const getBookings = await executeSQL('SELECT * FROM booking');
   const result = getBookings;
- 
   res.json(result);
  
 }
   
 
 const login = async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
-    const user = await queryDB(db, query);
+  const { username, password } = req.body;
+  const inputName = username;
+  const inputPassword = password;
 
-    if (user.length === 1) {
-      const username = user[0].username;
-      const token = jwt.sign(
-        {
-          exp: Math.floor(Date.now() / 1000) + 60 * 60,
-          data: username,
-        },
-        jwtSecret
-      );
-      res.json({ token });
-    } else {
-      pino.error("Username or password invalid.");
-      res.status(401).json({ error: "Username or password invalid!" });
-    }
-  } catch (error) {
-    pino.error("Login error:", error.message);
-    res.status(500).json({ error: "Internal Server Error." });
+  const getUsername = await executeSQL(`SELECT username FROM users WHERE username = '${inputName}' AND password = '${inputPassword}'`);
+  if (getUsername.length === 1) {
+    window.open("http://www.google.de/", "_blank");
   }
 };
+
 
 module.exports = { initializeAPI, getReservations };

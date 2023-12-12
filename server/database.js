@@ -32,6 +32,18 @@ const executeSQL = async (query) => {
   }
 };
 
+const queryDB = (db, query) => {
+  return new Promise((resolve, reject) => {
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        pino.error(err, "Error querying the database");
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+};
+
 const initializeDBSchema = async () => {
   try {
     const usersTableQuery = `CREATE TABLE IF NOT EXISTS users (
@@ -74,4 +86,4 @@ const initializeDBSchema = async () => {
   }
 };
 
-module.exports = { executeSQL, initializeMariaDB, initializeDBSchema };
+module.exports = { executeSQL, queryDB ,initializeMariaDB, initializeDBSchema };

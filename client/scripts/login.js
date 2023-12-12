@@ -11,37 +11,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   loginButton.addEventListener("click", async () => {
+    postLoginData();
+  });
+  const postLoginData = async () => {
     const username = usernameInput.value;
     const password = passwordInput.value;
 
-    if (password.length < 6) {
-      resultText.innerHTML = "Password must be at least 6 characters.";
-      return;
-    } else {
-      resultText.innerHTML = "";
-    }
+    const loginData = {
+        username: username,
+        password: password
+    };
 
-    try {
-      const response = await fetch("/api/login", {
+    await fetch("/api/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-
-      if (data?.token) {
-        localStorage.setItem("token", data.token);
-
-        window.location.href = "/";
-      } else {
-        errorText.innerText = data.error || "An error occurred.";
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      errorText.innerText = "An error occurred. Please try again.";
-    }
-  });
+        body: JSON.stringify(loginData),
+    });
+};
 });
