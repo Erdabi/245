@@ -23,23 +23,8 @@ const postRegisterData = async () => {
   const password = document.getElementById('password').value;
 
   if (!eMail.value || !password.value || !username.value) {
- 
-  if (!eMail.value) {
-    document.getElementById('eMail').style.backgroundColor = 'red';
-    setTimeout(2000)
-    document.getElementById('eMail').style.backgroundColor = 'white';
-  }
-  if (!password.value) {
-    document.getElementById('password').style.backgroundColor = 'red';
-    setTimeout(2000)
-    document.getElementById('password').style.backgroundColor = 'white';
-  }
-  if (!username.value) {
-    document.getElementById('username').style.backgroundColor = 'red';
-    setTimeout(2000)
-    document.getElementById('username').style.backgroundColor = 'white';
-  }
-} else {
+    alert("Felder müssen ausgefüllt sein")
+  } else {
 
   const registerData = {
       username: username,
@@ -66,7 +51,7 @@ const postRegisterData = async () => {
   } else if(result === 2) {
     alert("Die Email ist besetzt");
   }
-}
+  }
 };
 
 function formatPhoneNumber(input) {

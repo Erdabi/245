@@ -84,10 +84,20 @@ const initializeAPI = async (app) => {
   app.post("/api/users", postRegisterUsers);
   app.post("/api/booking", postRoomReservationData);
   app.post("/api/booking", postParkingReservationData);
-  app.get("/api/roomreservations", getRoomReservations);
-  
-  
+  app.get("/api/getRooms", getReservations);
+  app.get("/api/getParking", getParking);
 };
+
+const getReservations = async (req, res) => {
+  const getRoomData = await executeSQL('SELECT * FROM booking WHERE article_name LIKE "Raum%"');
+  res.json(getRoomData)
+ 
+}
+const getParking = async (req, res) => {
+  const getParkingData = await executeSQL('SELECT * FROM booking WHERE article_name LIKE "Parkplatz%"');
+  res.json(getParkingData)
+ 
+}
 
 const postRegisterUsers = async (req, res) => {
   const { username, city, street, eMail, phoneNumber, password } = req.body;
@@ -120,10 +130,10 @@ const postRegisterUsers = async (req, res) => {
  
  
 const postRoomReservationData = async (req, res) => {
-  const { checkIn, checkOut, roomName, bookingTime } = req.body;
+  const { checkIn, checkOut, articleName, bookingTime } = req.body;
   const sqlCheckIn = checkIn;
   const sqlCheckOut = checkOut;
-  const sqlRoomName = roomName;
+  const sqlRoomName = articleName;
   const sqlBookingTime = bookingTime;
 
 
@@ -141,7 +151,7 @@ const postParkingReservationData = async (req, res) => {
   const sqlParkingCheckIn = parkingCheckIn;
   const sqlParkingCheckOut = parkingCheckOut;
   const sqlParkingTime = parkingTime;
-
+  console.log(articleName)
   // Hier deine SQL-Abfrage mit den angepassten Daten
   const sqlQuery = `INSERT INTO booking (check_in, check_out, article_name, booking_time) VALUES ('${sqlParkingCheckIn}', '${sqlParkingCheckOut}', '${articleName}', '${sqlParkingTime}')`;
 
@@ -153,12 +163,7 @@ const postParkingReservationData = async (req, res) => {
 
  
  
-const getReservations = async (req, res) => {
-  const getBookings = await executeSQL('SELECT * FROM booking');
-  const result = getBookings;
-  res.json(result);
- 
-}
+
   
 
 const login = async (req, res) => {

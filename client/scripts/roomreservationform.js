@@ -1,24 +1,27 @@
 const roomReservationForm = document.getElementById('reservation-form');
+document.addEventListener('DOMContentLoaded', fetchAndDisplayRoomReservations);
 
 roomReservationForm.addEventListener('submit', function(event) {
     event.preventDefault();
     postRoomReservationData();
-    alert("Die Reservierung war erfolgreich!")
+    
 });
 const postRoomReservationData = async () => {
     const checkIn = document.getElementById('check-in').value;
     const checkOut = document.getElementById('check-out').value;
-    const roomName = document.getElementById('room-name').value;
+    const articleName = document.getElementById('room-name').value;
     const bookingTimeFrom = document.getElementById('booking-time-from').value;
     const bookingTimeTo = document.getElementById('booking-time-to').value;
     const bookingTime = bookingTimeFrom + "-" + bookingTimeTo
 
-    console.log(bookingTime)
+    if (!checkIn || !checkOut || !articleName || !bookingTimeFrom || !bookingTimeTo || !bookingTime) {
+      alert("Füllen sie alle Felder aus")
+    } else {
 
     const roomReservationData = {
         checkIn: checkIn,
         checkOut: checkOut,
-        roomName: roomName,
+        articleName: articleName,
         bookingTime: bookingTime
     };
 
@@ -29,6 +32,9 @@ const postRoomReservationData = async () => {
         },
         body: JSON.stringify(roomReservationData),
     });
+    fetchAndDisplayRoomReservations();
+    alert("Die Reservierung war erfolgreich!")
+  }
 };
 
 function on(img) {
@@ -66,27 +72,41 @@ function off() {
     document.getElementById("overlay").style.display = "none";
   }
 
-  async function fetchRoomReservations() {
-    try {
-      const response = await fetch('/api/roomreservations'); 
-      const reservations = await response.json();
-  
-      const tableBody = document.getElementById('room-reservation-table');
-      tableBody.innerHTML = ''; 
-  
-      reservations.forEach(reservation => {
-        const row = `<tr>
-          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${reservation.roomName}</td>
-          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${reservation.reservedFrom}</td>
-          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${reservation.reservedUntil}</td>
-          <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${reservation.status}</td>
-        </tr>`;
-        tableBody.innerHTML += row;
-      });
-    } catch (error) {
-      console.error('Fehler beim Abrufen der Raumreservierungen:', error);
+
+async function fetchAndDisplayRoomReservations() {
+  try {
+    // Senden einer Anfrage an den Backend-Endpunkt
+    const response = await fetch('/api/getRooms');
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+    const reservations = await response.json();
+    console.log(reservations)
+
+    // Auswählen des Tabellenkörpers im HTML-Dokument
+    const tableBody = document.getElementById('room-reservation-table');
+    tableBody.innerHTML = ''; // Löschen des vorhandenen Inhalts
+
+    // Durchlaufen der empfangenen Daten und Hinzufügen von Zeilen zur Tabelle
+    
+    reservations.forEach(reservation => {
+      newCheckIn = reservation.check_in.slice(0, -14);
+      newCheckOut = reservation.check_out.slice(0, -14);
+      const row = `<tr>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${reservation.article_name}</td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${newCheckIn}</td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${newCheckIn}</td>
+        <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">${reservation.booking_time}</td>
+      </tr>`;
+      tableBody.innerHTML += row;
+    });
+  } catch (error) {
+    console.error('Fehler beim Abrufen der Raumreservierungen:', error);
   }
+}
+
+
+
   
 
   

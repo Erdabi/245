@@ -56,13 +56,13 @@
           />
         </div>
         <div class="mb-5">
-          <label for="p-number">Wählen Sie einen Raum aus:</label>
+          <label for="room-name">Wählen Sie einen Raum aus:</label>
           <select
             id="room-name"
             name="room-name"
             class="w-full p-2 border border-gray-300 rounded"
           >
-            <option value="Raum waehlen">Raum wählen</option>
+            <option value="aaa" disabled selected>Raum wählen</option>
             <option value="Bluemlisalp">Blüemlisalp</option>
             <option value="Boston">Boston</option>
             <option value="Cambridge">Cambridge</option>
@@ -73,6 +73,7 @@
             <option value="Sorbonne">Sorbonne</option>
           </select>
         </div>
+        
         <div class="mb-5">
           <label for="p-number">Wählen Sie einen Zeitraum aus:</label>
           <br>
@@ -214,11 +215,14 @@
               Raumname
             </th>
             <th class="px-5 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Reservationzeitraum
+              Reservation von
             </th>
             <th class="px-5 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-              Reservierturngsdatum
-            </th>y
+              Reservation bis
+            </th>
+            <th class="px-5 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+              Reservationszeit
+            </th>
           </tr>
         </thead>
         <tbody id="room-reservation-table">
