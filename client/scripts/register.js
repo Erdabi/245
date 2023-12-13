@@ -11,8 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   registerButton.addEventListener("click", async () => {
 
     postRegisterData();
-    alert("Die Registrierung war erfolgreich");
-  console.log("Granat");
+   
   });
 });
 const postRegisterData = async () => {
@@ -23,6 +22,25 @@ const postRegisterData = async () => {
   const phoneNumber = document.getElementById('number').value;
   const password = document.getElementById('password').value;
 
+  if (!eMail.value || !password.value || !username.value) {
+ 
+  if (!eMail.value) {
+    document.getElementById('eMail').style.backgroundColor = 'red';
+    setTimeout(2000)
+    document.getElementById('eMail').style.backgroundColor = 'white';
+  }
+  if (!password.value) {
+    document.getElementById('password').style.backgroundColor = 'red';
+    setTimeout(2000)
+    document.getElementById('password').style.backgroundColor = 'white';
+  }
+  if (!username.value) {
+    document.getElementById('username').style.backgroundColor = 'red';
+    setTimeout(2000)
+    document.getElementById('username').style.backgroundColor = 'white';
+  }
+} else {
+
   const registerData = {
       username: username,
       city: city,
@@ -32,13 +50,23 @@ const postRegisterData = async () => {
       password: password
   };
 
-  await fetch("/api/users", {
+  response = await fetch("/api/users", {
       method: "POST",
       headers: {
           "Content-Type": "application/json",
       },
       body: JSON.stringify(registerData),
   });
+  let result = await response.json();
+  console.log(result)
+  if (result === 0) {
+    alert("Die Regestrierung war erfolgreich")
+  } else if(result === 1) {
+    alert("Der Benutzername ist besetzt");
+  } else if(result === 2) {
+    alert("Die Email ist besetzt");
+  }
+}
 };
 
 function formatPhoneNumber(input) {

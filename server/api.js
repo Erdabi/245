@@ -84,6 +84,7 @@ const initializeAPI = async (app) => {
   app.post("/api/users", postRegisterUsers);
   app.post("/api/booking", postRoomReservationData);
   app.post("/api/booking", postParkingReservationData);
+  app.get("/api/roomreservations", getRoomReservations);
   
   
 };
@@ -96,13 +97,24 @@ const postRegisterUsers = async (req, res) => {
   const sqlEMail = eMail;
   const sqlPhoneNumber = phoneNumber;
   const sqlPassword = password;
+  let result = 0;
 
+  const getUserName = await executeSQL(`SELECT username FROM users WHERE username = '${sqlUsername}'`);
+  const getUserEmail = await executeSQL(`SELECT email FROM users WHERE email = '${sqlEMail}'`);
+  if(getUserName.length === 1) {
+    result = 1;
+    res.json(result);
+  } else if(getUserEmail.length === 1){
+    result = 2;
+    res.json(result);
+  } else {
   // Hier deine SQL-Abfrage mit den angepassten Daten
   const sqlQuery = `INSERT INTO users (username, city, street, email, phone, password) VALUES ('${sqlUsername}', '${sqlCity}', '${sqlStreet}', '${sqlEMail}', '${sqlPhoneNumber}', '${sqlPassword}')`;
 
   // Verwenden Sie executeSQL statt connection.query
   console.log(sqlQuery);
   await executeSQL(sqlQuery);
+}
 };
 
  
@@ -156,7 +168,20 @@ const login = async (req, res) => {
 
   const getUsername = await executeSQL(`SELECT username FROM users WHERE username = '${inputName}' AND password = '${inputPassword}'`);
   if (getUsername.length === 1) {
-    window.open("http://www.google.de/", "_blank");
+    const result = true;
+    res.json(result);
+  }
+    
+};
+
+const getRoomReservations = async (req, res) => {
+  try {
+    const query = 'SELECT room_name, reserved_from, reserved_until, status FROM room_reservations';
+    const reservations = await executeSQL(query);
+    res.json(reservations);
+  } catch (error) {
+    pino.error('Fehler beim Abrufen der Raumreservierungen:', error);
+    res.status(500).json({ error: 'Interner Serverfehler' });
   }
 };
 

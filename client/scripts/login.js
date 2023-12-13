@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loginButton.addEventListener("click", async () => {
     postLoginData();
+        
   });
   const postLoginData = async () => {
     const username = usernameInput.value;
@@ -22,12 +23,19 @@ document.addEventListener("DOMContentLoaded", () => {
         password: password
     };
 
-    await fetch("/api/login", {
+    const response = await fetch("/api/login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(loginData),
     });
+    if (response.ok) {
+      const result = await response.json();
+      window.location.href = '../index.html';
+    } else {
+      alert("Der Benutzername oder das Passwort ist falsch");
+      console.log("22")
+    }
 };
 });
